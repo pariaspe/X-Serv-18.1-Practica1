@@ -12,7 +12,7 @@ import webapp
 # TODO
 # unificar '' y ""
 # revisar url_style
-# diccionarios a atributos?
+# diccionarios a atributos? No
 # camnbiar el html para respuestas Error
 # Camel case? html_answer, url_style, etc?
 
@@ -27,7 +27,7 @@ FORM = """
     </form>
 """
 
-class webShort(webapp.webApp):
+class WebShort(webapp.webApp):
     def parse(self, request):
         method = request.split()[0]
         if(method == "POST"):
@@ -84,4 +84,4 @@ class webShort(webapp.webApp):
         return (code, html_answer)
 
 if __name__ == "__main__":
-    testWebApp = webShort("localhost", 1234)
+    testWebApp = WebShort("localhost", 1234)
