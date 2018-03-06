@@ -9,7 +9,7 @@ Web recortadora de urls
 
 import webapp
 
-urls = {}
+urls = {} # Hacer atributo?
 nums = {}
 
 FORM = """
@@ -37,6 +37,11 @@ class webShort(webapp.webApp):
         else:
             return 'http://' + url
 
+    def print_urls(self, urls):
+        url_string = ""
+        for i in urls:
+            if i <= len(urls):
+                url_string += str(i) + ': ' + urls[i]
 
     def process(self, parsedRequest):
         print(parsedRequest)
@@ -44,7 +49,7 @@ class webShort(webapp.webApp):
             if(parsedRequest[1] == ''):
                 code = "200 OK"
                 html_answer = '<html><body><h1>Acortador de URLs</h1> ' + FORM
-                html_answer += '<p>' + str(nums) + '</p></body></html>'
+                html_answer += '<p>' + self.print_urls(nums) + '</p></body></html>'
             elif(int(parsedRequest[1]) in nums):
                 code = "302 Found\r\nLocation: " + nums[int(parsedRequest[1])]
                 html_answer = ''
@@ -61,7 +66,7 @@ class webShort(webapp.webApp):
 
             code = "200 OK"
             html_answer = '<html><body><h1>Acortador de URLs</h1> ' + FORM
-            html_answer += '<p>' + str(nums) + '</p></body></html>'
+            html_answer += '<p>' + self.print_urls(nums) + '</p></body></html>'
         else:
             code = "404 Not Found"
             html_answer = "Error"
