@@ -9,6 +9,13 @@ Web recortadora de urls
 
 import webapp
 
+# TODO
+# unificar '' y ""
+# revisar url_style
+# diccionarios a atributos?
+# camnbiar el html para respuestas Error
+# Camel case? html_answer, url_style, etc?
+
 urls = {} # Hacer atributo?
 nums = {}
 
@@ -41,7 +48,9 @@ class webShort(webapp.webApp):
         url_string = ""
         for i in urls:
             if i <= len(urls):
-                url_string += str(i) + ': ' + urls[i]
+                url_string += str(i) + ': ' + str(urls[i]) + '<br>'
+
+        return url_string
 
     def process(self, parsedRequest):
         print(parsedRequest)
