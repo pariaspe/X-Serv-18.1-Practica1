@@ -11,7 +11,14 @@ import webapp
 
 urls = {}
 nums = {}
-cont = 0
+
+FORM = """
+    <form action="" method="POST">
+        <label for="url">URL a acrotar:</label><br>
+        <input type="text" name="url" value="gsyc.es"/><br>
+        <input type="submit" value="Send url">
+    </form>
+"""
 
 class webShort(webapp.webApp):
     def parse(self, request):
@@ -20,39 +27,47 @@ class webShort(webapp.webApp):
             url = request.split("=")[-1]
         else:
             url = None
-        resource = request.split()[1]
+        resource = request.split()[1].split('/')[1] # Recurso sin barra
         return (method, resource, url)
 
-    def new_num(self):
-        global cont
-        cont += 1
-        return cont
+    def url_style(self, url): # Funciona mal
+        print(url)
+        if url.startswith('http://') or url.startswith('https://'):
+            return url
+        else:
+            return 'http://' + url
+
 
     def process(self, parsedRequest):
         print(parsedRequest)
         if(parsedRequest[0] == "GET"):
-            html_answer = """
-                <html>
-                    <body>
-                        <h1>Acortador de URLs</h1>
-                        <form action="" method="POST">
-                            <label for="url">URL a acrotar:</label><br>
-                            <input type="text" name="url" value=""/><br>
-                            <input type="submit" value="Send url">
-                        </form>
-                    </body>
-                </html>"""
+            if(parsedRequest[1] == ''):
+                code = "200 OK"
+                html_answer = '<html><body><h1>Acortador de URLs</h1> ' + FORM
+                html_answer += '<p>' + str(nums) + '</p></body></html>'
+            elif(int(parsedRequest[1]) in nums):
+                code = "302 Found\r\nLocation: " + nums[int(parsedRequest[1])]
+                html_answer = ''
+            else:
+                code = "404 Not Found"
+                html_answer = 'Error'
         elif(parsedRequest[0] == "POST"):
-            url = parsedRequest[2]
+            url = self.url_style(parsedRequest[2])
             if url in urls:
                 print("ya dentro")
             else:
-                urls[url] = self.new_num()
+                nums[len(nums)] = url
+                urls[url] = len(urls)
 
-            html_answer = '<html><body><h1>URL: ' + str(urls) + '</h1></body></html>'
+            code = "200 OK"
+            html_answer = '<html><body><h1>Acortador de URLs</h1> ' + FORM
+            html_answer += '<p>' + str(nums) + '</p></body></html>'
         else:
+            code = "404 Not Found"
             html_answer = "Error"
-        return ("200 OK", html_answer)
+
+
+        return (code, html_answer)
 
 if __name__ == "__main__":
     testWebApp = webShort("localhost", 1234)
