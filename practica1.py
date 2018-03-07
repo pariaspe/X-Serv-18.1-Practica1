@@ -16,7 +16,7 @@ import webapp
 # camnbiar el html para respuestas Error
 # Camel case? html_answer, url_style, etc?
 
-urls = {} # Hacer atributo?
+urls = {}  # Hacer atributo?
 nums = {}
 
 FORM = """
@@ -27,6 +27,7 @@ FORM = """
     </form>
 """
 
+
 class WebShort(webapp.webApp):
     def parse(self, request):
         method = request.split()[0]
@@ -34,13 +35,13 @@ class WebShort(webapp.webApp):
             url = request.split("=")[-1]
         else:
             url = None
-        resource = request.split()[1].split('/')[1] # Recurso sin barra
+        resource = request.split()[1].split('/')[1]  # Recurso sin barra
         return (method, resource, url)
 
-    def url_style(self, url): # Funciona mal
-        print(url)
-        if url.startswith('http://') or url.startswith('https://'):
-            return url
+    def url_style(self, url):
+        print(url.encode().decode('ascii'))
+        if url.startswith('http') or url.startswith('https'):
+            return url.replace('%3A%2F%2F', '://')
         else:
             return 'http://' + url
 
@@ -58,7 +59,8 @@ class WebShort(webapp.webApp):
             if(parsedRequest[1] == ''):
                 code = "200 OK"
                 html_answer = '<html><body><h1>Acortador de URLs</h1> ' + FORM
-                html_answer += '<p>' + self.print_urls(nums) + '</p></body></html>'
+                html_answer += '<p>' + self.print_urls(nums)
+                html_answer += '</p></body></html>'
             elif(int(parsedRequest[1]) in nums):
                 code = "302 Found\r\nLocation: " + nums[int(parsedRequest[1])]
                 html_answer = ''
@@ -79,7 +81,6 @@ class WebShort(webapp.webApp):
         else:
             code = "404 Not Found"
             html_answer = "Error"
-
 
         return (code, html_answer)
 
