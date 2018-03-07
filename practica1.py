@@ -8,6 +8,7 @@ Web recortadora de urls
 """
 
 import webapp
+import os.path
 
 urls = {}
 nums = {}
@@ -80,9 +81,11 @@ class WebShort(webapp.webApp):
         return (code, html_answer)
 
 if __name__ == '__main__':
-    with open('file.txt') as f:
-        for line in f:
-            key, val = line.split()
-            urls[key] = val
-            nums[val] = key
+    if(os.path.isfile('file.txt')):
+        with open('file.txt') as f:
+            for line in f:
+                key, val = line.split()
+                urls[key] = val
+                nums[val] = key
+    
     testWebApp = WebShort('localhost', 1234)
