@@ -9,9 +9,6 @@ Web recortadora de urls
 
 import webapp
 
-# TODO
-# Camel case? html_answer, url_style, etc?
-
 urls = {}
 nums = {}
 
@@ -69,6 +66,9 @@ class WebShort(webapp.webApp):
             else:
                 nums[str(len(nums))] = url
                 urls[url] = str(len(urls))
+                with open('file.txt', 'w') as file:
+                    for k, v in urls.items():
+                        file.write(str(k) + ' ' + str(v) + '\n')
 
             code = '200 OK'
             html_answer = '<html><body><h1>Acortador de URLs</h1> ' + FORM
@@ -80,5 +80,9 @@ class WebShort(webapp.webApp):
         return (code, html_answer)
 
 if __name__ == '__main__':
+    with open('file.txt') as f:
+        for line in f:
+            key, val = line.split()
+            urls[key] = val
+            nums[val] = key
     testWebApp = WebShort('localhost', 1234)
-    print('llego')
