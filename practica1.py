@@ -13,7 +13,6 @@ import webapp
 # unificar '' y ""
 # revisar url_style
 # diccionarios a atributos? No
-# camnbiar el html para respuestas Error
 # Camel case? html_answer, url_style, etc?
 
 urls = {}  # Hacer atributo?
@@ -31,8 +30,8 @@ FORM = """
 class WebShort(webapp.webApp):
     def parse(self, request):
         method = request.split()[0]
-        if(method == "POST"):
-            url = request.split("=")[-1]
+        if(method == 'POST'):
+            url = request.split('=')[-1]
         else:
             url = None
         resource = request.split()[1].split('/')[1]  # Recurso sin barra
@@ -48,41 +47,41 @@ class WebShort(webapp.webApp):
     def print_urls(self, urls):
         url_string = ""
         for i in urls:
-            if i <= len(urls):
+            if i <= str(len(urls)):
                 url_string += str(i) + ': ' + str(urls[i]) + '<br>'
 
         return url_string
 
     def process(self, parsedRequest):
         print(parsedRequest)
-        if(parsedRequest[0] == "GET"):
+        if(parsedRequest[0] == 'GET'):
             if(parsedRequest[1] == ''):
-                code = "200 OK"
+                code = '200 OK'
                 html_answer = '<html><body><h1>Acortador de URLs</h1> ' + FORM
                 html_answer += '<p>' + self.print_urls(nums)
                 html_answer += '</p></body></html>'
-            elif(int(parsedRequest[1]) in nums):
-                code = "302 Found\r\nLocation: " + nums[int(parsedRequest[1])]
+            elif(parsedRequest[1] in nums):
+                code = '302 Found\r\nLocation: ' + nums[parsedRequest[1]]
                 html_answer = ''
             else:
-                code = "404 Not Found"
-                html_answer = 'Error'
-        elif(parsedRequest[0] == "POST"):
+                code = '404 Not Found'
+                html_answer = '<html><body><h1>Not Found.</h1></body></html>'
+        elif(parsedRequest[0] == 'POST'):
             url = self.url_style(parsedRequest[2])
             if url in urls:
-                print("ya dentro")
+                print('ya dentro')
             else:
-                nums[len(nums)] = url
-                urls[url] = len(urls)
+                nums[str(len(nums))] = url
+                urls[url] = str(len(urls))
 
-            code = "200 OK"
+            code = '200 OK'
             html_answer = '<html><body><h1>Acortador de URLs</h1> ' + FORM
             html_answer += '<p>' + self.print_urls(nums) + '</p></body></html>'
         else:
-            code = "404 Not Found"
-            html_answer = "Error"
+            code = '404 Not Found'
+            html_answer = '<html><body><h1>Not Found.</h1></body></html>'
 
         return (code, html_answer)
 
-if __name__ == "__main__":
-    testWebApp = WebShort("localhost", 1234)
+if __name__ == '__main__':
+    testWebApp = WebShort('localhost', 1234)
