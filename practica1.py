@@ -87,5 +87,4 @@ if __name__ == '__main__':
                 key, val = line.split()
                 urls[key] = val
                 nums[val] = key
-    
     testWebApp = WebShort('localhost', 1234)
