@@ -72,6 +72,7 @@ class WebShort(webapp.webApp):
                 with open('file.txt', 'w') as file:
                     for k, v in urls.items():
                         file.write(str(k) + ' ' + str(v) + '\n')
+                file.close()
 
             code = '200 OK'
             html_answer = '<html><body><h1>Acortador de URLs</h1>' + FORM + msg
@@ -84,9 +85,10 @@ class WebShort(webapp.webApp):
 
 if __name__ == '__main__':
     if(os.path.isfile('file.txt')):
-        with open('file.txt') as f:
-            for line in f:
+        with open('file.txt') as file:
+            for line in file:
                 key, val = line.split()
                 urls[key] = val
                 nums[val] = key
+        file.close()
     testWebApp = WebShort('localhost', 1234)
