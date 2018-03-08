@@ -24,13 +24,16 @@ FORM = """
 
 class WebShort(webapp.webApp):
     def parse(self, request):
-        method = request.split()[0]
-        if(method == 'POST'):
-            url = request.split('=')[-1]
+        if(request):
+            method = request.split()[0]
+            if(method == 'POST'):
+                url = request.split('=')[-1]
+            else:
+                url = None
+            resource = request.split()[1].split('/')[1]  # Recurso sin barra
+            return (method, resource, url)
         else:
-            url = None
-        resource = request.split()[1].split('/')[1]  # Recurso sin barra
-        return (method, resource, url)
+            return (None, None, None)
 
     def url_style(self, url):
         print(url.encode().decode('ascii'))
