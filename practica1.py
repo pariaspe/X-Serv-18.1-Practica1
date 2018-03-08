@@ -63,17 +63,19 @@ class WebShort(webapp.webApp):
         elif(parsedRequest[0] == 'POST'):
             url = self.url_style(parsedRequest[2])
             if url in urls:
-                print('ya dentro')
+                msg = '<p>La URL ya estaba en la lista en: <a href=/'
+                msg += urls[url] + '>/' + urls[url] + '</a></p><p>'
             else:
                 nums[str(len(nums))] = url
                 urls[url] = str(len(urls))
+                msg = '<p>URL agregada!<p/><p>'
                 with open('file.txt', 'w') as file:
                     for k, v in urls.items():
                         file.write(str(k) + ' ' + str(v) + '\n')
 
             code = '200 OK'
-            html_answer = '<html><body><h1>Acortador de URLs</h1> ' + FORM
-            html_answer += '<p>' + self.print_urls(nums) + '</p></body></html>'
+            html_answer = '<html><body><h1>Acortador de URLs</h1>' + FORM + msg
+            html_answer += self.print_urls(nums) + '</p></body></html>'
         else:
             code = '404 Not Found'
             html_answer = '<html><body><h1>Not Found.</h1></body></html>'
