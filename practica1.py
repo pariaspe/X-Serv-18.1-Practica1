@@ -46,6 +46,12 @@ class WebShort(webapp.webApp):
 
         return url_string
 
+    def dict_to_file(self, dict, file):
+        with open(file, 'w') as f:
+            for k, v in dict.items():
+                f.write(str(k) + ' ' + str(v) + '\n')
+        f.close()
+
     def process(self, parsedRequest):
         print(parsedRequest)
         if(parsedRequest[0] == 'GET'):
@@ -69,10 +75,7 @@ class WebShort(webapp.webApp):
                 nums[str(len(nums))] = url
                 urls[url] = str(len(urls))
                 msg = '<p>URL agregada!<p/><p>'
-                with open('file.txt', 'w') as file:
-                    for k, v in urls.items():
-                        file.write(str(k) + ' ' + str(v) + '\n')
-                file.close()
+                self.dict_to_file(urls, 'file.txt')
 
             code = '200 OK'
             html_answer = '<html><body><h1>Acortador de URLs</h1>' + FORM + msg
@@ -85,10 +88,10 @@ class WebShort(webapp.webApp):
 
 if __name__ == '__main__':
     if(os.path.isfile('file.txt')):
-        with open('file.txt') as file:
-            for line in file:
+        with open('file.txt') as f:
+            for line in f:
                 key, val = line.split()
                 urls[key] = val
                 nums[val] = key
-        file.close()
+        f.close()
     testWebApp = WebShort('localhost', 1234)
