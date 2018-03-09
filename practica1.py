@@ -13,7 +13,7 @@ import os.path
 urls = {}
 nums = {}
 
-FILE_NAME = "file.txt"
+FILE_NAME = 'file.txt'
 FORM = """
     <form action="" method="POST">
         <label for="url">URL a acrotar:</label><br>
@@ -36,13 +36,15 @@ class WebShort(webapp.webApp):
         else:
             return (None, None, None)
 
+    # Añade si es necesario el 'http://' inicial
     def url_style(self, url):
-        print(url.encode().decode('ascii'))
+        print(url.encode().decode('ascii'))  # TRAZA
         if url.startswith('http') or url.startswith('https'):
             return url.replace('%3A%2F%2F', '://')
         else:
             return 'http://' + url
 
+    # Devuelve un string con la lista de urls
     def print_urls(self, urls):
         url_string = ''
         for k, v in urls.items():
@@ -50,6 +52,7 @@ class WebShort(webapp.webApp):
 
         return url_string
 
+    # Escribe el contenido del diccionario en un fichero
     def dict_to_file(self, dict, file):
         with open(file, 'w') as f:
             for k, v in dict.items():
@@ -57,17 +60,17 @@ class WebShort(webapp.webApp):
         f.close()
 
     def process(self, parsedRequest):
-        print(parsedRequest)
+        print(parsedRequest)  # TRAZA
         if(parsedRequest[0] == 'GET'):
-            if(parsedRequest[1] == ''):
+            if(parsedRequest[1] == ''):  # Recurso raiz
                 code = '200 OK'
                 html_answer = '<html><body><h1>Acortador de URLs</h1> ' + FORM
                 html_answer += '<p>' + self.print_urls(nums)
                 html_answer += '</p></body></html>'
-            elif(parsedRequest[1] in nums):
+            elif(parsedRequest[1] in nums):  # Recurso en el diccionario
                 code = '302 Found\r\nLocation: ' + nums[parsedRequest[1]]
                 html_answer = ''
-            else:
+            else:  # Recurso desconocido
                 code = '404 Not Found'
                 html_answer = '<html><body><h1>Not Found.</h1></body></html>'
         elif(parsedRequest[0] == 'POST'):
