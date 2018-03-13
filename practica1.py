@@ -38,7 +38,6 @@ class WebShort(webapp.webApp):
 
     # Añade si es necesario el 'http://' inicial
     def url_style(self, url):
-        print(url.encode().decode('ascii'))  # TRAZA
         if url.startswith('http') or url.startswith('https'):
             return url.replace('%3A%2F%2F', '://')
         else:
