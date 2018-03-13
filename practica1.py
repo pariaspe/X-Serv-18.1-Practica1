@@ -13,7 +13,7 @@ import os.path
 urls = {}
 nums = {}
 
-FILE_NAME = 'file.txt'
+FILE_PATH = './file.txt'
 FORM = """
     <form action="" method="POST">
         <label for="url">URL a acrotar:</label><br>
@@ -81,7 +81,7 @@ class WebShort(webapp.webApp):
                 nums[str(len(nums))] = url
                 urls[url] = str(len(urls))
                 msg = '<p>URL agregada!<p/><p>'
-                self.dict_to_file(urls, FILE_NAME)
+                self.dict_to_file(urls, FILE_PATH)
 
             code = '200 OK'
             html_answer = '<html><body><h1>Acortador de URLs</h1>' + FORM + msg
@@ -93,8 +93,8 @@ class WebShort(webapp.webApp):
         return (code, html_answer)
 
 if __name__ == '__main__':
-    if(os.path.isfile(FILE_NAME)):
-        with open(FILE_NAME) as f:
+    if(os.path.isfile(FILE_PATH)):
+        with open(FILE_PATH) as f:
             for line in f:
                 key, val = line.split()
                 urls[key] = val
