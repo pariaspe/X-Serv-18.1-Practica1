@@ -101,4 +101,7 @@ if __name__ == '__main__':
                 urls[key] = val
                 nums[val] = key
         f.close()
-    testWebApp = WebShort('localhost', 1234)
+    try:
+        testWebApp = WebShort('localhost', 1234)
+    except KeyboardInterrupt:
+        print("\nServer's down")
