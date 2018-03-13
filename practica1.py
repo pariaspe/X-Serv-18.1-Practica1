@@ -74,7 +74,9 @@ class WebShort(webapp.webApp):
                 html_answer = '<html><body><h1>Not Found.</h1></body></html>'
         elif(parsedRequest[0] == 'POST'):
             url = self.url_style(parsedRequest[2])
-            if url in urls:
+            if(parsedRequest[2] == ''):
+                msg = '<p>URL vacia!<p/><p>'
+            elif url in urls:
                 msg = '<p>La URL ya estaba en la lista en: <a href=/'
                 msg += urls[url] + '>/' + urls[url] + '</a></p><p>'
             else:
